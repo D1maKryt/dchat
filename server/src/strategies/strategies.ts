@@ -1,0 +1,111 @@
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.serves';
+import type {
+  CreateRegisterAndServesDTO,
+  CreateRegisterDto,
+  CreateServerDTO,
+} from '../register/dto/create-register.dto';
+import bcrypt from 'bcrypt';
+import JWT from 'jsonwebtoken';
+import { v4 as uuid } from 'uuid';
+
+@Injectable()
+export class Strategies {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async singUpByPassword(user: CreateRegisterDto) {
+    const passwordHash = bcrypt.hashSync(user.password, 7);
+    const username = user.username;
+    return this.singUp({ username: username, password: passwordHash });
+  }
+
+  async singUp({
+    username: name,
+    accessToken,
+    refreshToken,
+    password,
+  }: CreateRegisterAndServesDTO) {
+    const pretendent = await this.prisma.user.findUnique({
+      where: { name: name },
+    });
+    if (pretendent) {
+      console.log(pretendent);
+      throw new HttpException('User уже создан', HttpStatus.FORBIDDEN);
+    }
+
+    const id = uuid();
+
+    const generatedToken = JWT.sign({ id: id }, process.env.SECRET!, {
+      expiresIn: '1h',
+    });
+
+    const createdUser = await this.prisma.user.create({
+      data: {
+        id: id,
+        name: name,
+        password: password,
+        Token: generatedToken,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
+    });
+    return createdUser;
+  }
+
+  async singIn({ username, password }: CreateRegisterDto) {
+    const pretendent = await this.prisma.user.findUnique({
+      where: { name: username },
+    });
+
+    if (!pretendent)
+      throw new HttpException(
+        'Пользователь не зарегистрирован',
+        HttpStatus.FORBIDDEN,
+      );
+
+    if (!pretendent.password) {
+      throw new HttpException('Пароля нет', HttpStatus.FORBIDDEN);
+    }
+
+    const comparePassword = await bcrypt.compare(password, pretendent.password);
+
+    if (comparePassword === false) {
+      throw new HttpException('Пароль неверный', HttpStatus.FORBIDDEN);
+    }
+
+    return pretendent;
+  }
+  async singInServes({
+    username,
+    accessToken,
+    refreshToken,
+  }: CreateRegisterAndServesDTO) {
+    const pretendent = await this.prisma.user.findUnique({
+      where: { name: username },
+    });
+
+    if (!pretendent) {
+      throw new HttpException(
+        'Пользователя несуществует',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    const userUpdete = this.prisma.user.update({
+      where: { name: username },
+      data: { accessToken: accessToken, refreshToken: refreshToken },
+    });
+
+    return userUpdete;
+  }
+  // найти примeнение?
+
+  async singUpServes(user: CreateServerDTO) {
+    const pretendent = await this.prisma.user.findUnique({
+      where: { name: user.username },
+    });
+    if (pretendent) {
+      throw new HttpException('User уже создан', HttpStatus.FORBIDDEN);
+    }
+    return this.singUp(user);
+  }
+}

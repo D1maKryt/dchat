@@ -1,0 +1,27 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "./generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  password     String?
+  name         String   @unique
+  refreshToken String?
+  accessToken  String?
+  Token        String
+  twoFactorAuthenticationSecret String? 
+  isTwoFactorAuthenticationEnabled Boolean @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model Chat {
+  id        Int      @id @default(autoincrement())
+  massage   String
+  createdAt DateTime @default(now())
+}
