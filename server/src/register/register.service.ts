@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import type { CreateRegisterDto } from './dto/create-register.dto';
+import { CreateRegisterDto, codeDTO } from './dto/create-register.dto';
 import { Strategies } from 'src/strategies/strategies';
 import { HttpException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.serves';
@@ -15,8 +15,8 @@ export class RegisterService {
     return this.strategies.singUpByPassword(data);
   }
 
-  async auth(CreateRegisterDto: CreateRegisterDto) {
-    return this.strategies.singIn(CreateRegisterDto);
+  async auth(CreateRegisterDto: CreateRegisterDto, code: string) {
+    return this.strategies.singIn(CreateRegisterDto, code);
   }
 
   async checkMe(data: CreateRegisterDto) {

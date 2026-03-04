@@ -23,3 +23,7 @@ export class CreateServerDTO {
   accessToken: string;
   refreshToken: string;
 }
+
+export class codeDTO {
+  code?: string;
+}

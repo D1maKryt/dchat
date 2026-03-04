@@ -16,7 +16,7 @@ model User {
   accessToken  String?
   Token        String
   twoFactorAuthenticationSecret String? 
-  isTwoFactorAuthenticationEnabled Boolean @default(false)
+  isTwoFactorAuthenticationEnabled Boolean? @default(false)
   createdAt    DateTime @default(now())
 }
 

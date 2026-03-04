@@ -1,6 +1,7 @@
-import { Body, Controller, Headers, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.serves';
 import { TwoFactorAuthService } from './2fa.service';
+import type { Response } from 'express';
 
 @Controller('TwoFactorAuth')
 export class TwoFactorAuthController {
@@ -9,11 +10,19 @@ export class TwoFactorAuthController {
     private readonly TwofaS: TwoFactorAuthService,
   ) {}
 
-  @Post('generate')
-  async generateSecret(@Headers('authorization') JWT: string) {
-    const clearToken = JWT.split(' ')[1];
-
-    const generate = await this.TwofaS.generateSecret(clearToken);
+  @Post('2faTurnOn')
+  async generateSecret(@Body('username') username: string) {
+    const generate = await this.TwofaS.generateSecret(username);
     return generate;
+  }
+
+  @Post('2faConfirm')
+  async confirm(
+    @Body() code: string,
+    @Body('username') username: string,
+    @Res() res: Response,
+  ) {
+    const data = await this.TwofaS.confirm(code, username);
+    return res.send();
   }
 }

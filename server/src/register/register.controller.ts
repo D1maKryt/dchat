@@ -10,7 +10,7 @@ import {
   Next,
 } from '@nestjs/common';
 import { RegisterService } from './register.service';
-import { CreateRegisterDto } from './dto/create-register.dto';
+import { CreateRegisterDto, codeDTO } from './dto/create-register.dto';
 import type { Response, Request, NextFunction } from 'express';
 import { GoogleAuthGuard } from 'src/strategies/GvardStrategies';
 import { Strategies } from 'src/strategies/strategies';
@@ -34,8 +34,12 @@ export class RegisterController {
     return res.send(reg);
   }
   @Post('login')
-  async auth(@Body() data: CreateRegisterDto, @Res() res: Response) {
-    const auth = await this.registerService.auth(data);
+  async auth(
+    @Body() data: CreateRegisterDto,
+    @Res() res: Response,
+    @Body() code: string,
+  ) {
+    const auth = await this.registerService.auth(data, code);
     return res.json(['Успешная аунтификация', auth]);
   }
   @Get('check')

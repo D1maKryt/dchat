@@ -1,6 +1,6 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.serves';
-import type {
+import {
   CreateRegisterAndServesDTO,
   CreateRegisterDto,
   CreateServerDTO,
@@ -8,10 +8,15 @@ import type {
 import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
+import { authenticator } from '@otplib/preset-v11';
+import { TwoFactorAuthService } from 'src/register/2fa.service';
 
 @Injectable()
 export class Strategies {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly TwoFa: TwoFactorAuthService,
+  ) {}
 
   async singUpByPassword(user: CreateRegisterDto) {
     const passwordHash = bcrypt.hashSync(user.password, 7);
@@ -52,7 +57,7 @@ export class Strategies {
     return createdUser;
   }
 
-  async singIn({ username, password }: CreateRegisterDto) {
+  async singIn({ username, password }: CreateRegisterDto, code?: string) {
     const pretendent = await this.prisma.user.findUnique({
       where: { name: username },
     });
@@ -72,9 +77,12 @@ export class Strategies {
     if (comparePassword === false) {
       throw new HttpException('Пароль неверный', HttpStatus.FORBIDDEN);
     }
-
+    if (pretendent.isTwoFactorAuthenticationEnabled === true) {
+      this.TwoFa.Verefication(username, code);
+    }
     return pretendent;
   }
+
   async singInServes({
     username,
     accessToken,
