@@ -26,11 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-shiftshift-theme="system" data-shiftshift-double-shift="false" lang="ru">
+    <html
+      data-shiftshift-theme="system"
+      data-shiftshift-double-shift="false"
+      lang="ru"
+    >
       <body
         className={[
           `${geistSans.variable} ${geistMono.variable} antialiased`,
-          "flex flex-col min-h-screen"
+          "flex flex-col min-h-screen",
         ].join(" ")}
       >
         <Header></Header>

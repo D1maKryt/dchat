@@ -7,15 +7,15 @@
 @tailwind utilities;
 
 :root {
-  --bg-default: #2C2C2C;
-  
+  --bg-default: #2c2c2c;
+
   --bg-section: #202020;
   --bg-component: #464646;
-  
-  --fg-default: #EEEEEE;
-  
+
+  --fg-default: #eeeeee;
+
   --text-default: var(--fg-default);
-  --text-mini: #B3B3B3;
+  --text-mini: #b3b3b3;
 
   --fs-h1: 36px;
   --fs-h2: 32px;

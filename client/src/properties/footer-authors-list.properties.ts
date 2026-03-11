@@ -8,22 +8,24 @@ type FooterAuthorsListDivPropertiesKeys =
 
 type FooterAuthorsListUniqueProperties = {
   AUTHOR_LINKS_ITEM: Omit<FooterAuthorLinksListItemProperties, "link">;
-}
+};
 
-type FooterAuthorsListDivProperties = Record<FooterAuthorsListDivPropertiesKeys, DivProperties>;  
-type FooterAuthorsListAllProperties =
-  & FooterAuthorsListDivProperties
-  & FooterAuthorsListUniqueProperties;
+type FooterAuthorsListDivProperties = Record<
+  FooterAuthorsListDivPropertiesKeys,
+  DivProperties
+>;
+type FooterAuthorsListAllProperties = FooterAuthorsListDivProperties &
+  FooterAuthorsListUniqueProperties;
 
 export const FOOTER_AUTHORS_LIST_PROPERTIES: FooterAuthorsListAllProperties = {
   LIST: {
-    className: "flex flex-col gap-1"
+    className: "flex flex-col gap-1",
   },
   AUTHOR_LINKS_PARENT: {
-    className: "flex flex-row gap-2 items-center"
+    className: "flex flex-row gap-2 items-center",
   },
   AUTHOR_LINKS: {
-    className: "flex flex-row gap-2 items-center"
+    className: "flex flex-row gap-2 items-center",
   },
   AUTHOR_LINKS_ITEM: {},
-}
+};
