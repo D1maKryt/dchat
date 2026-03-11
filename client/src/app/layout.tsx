@@ -1,10 +1,8 @@
 "use client"
 
-import { ThemeProvider } from "@mui/material";
-
 import { Footer, Header } from "@/layout";
-import { theme } from "@/config";
 
+import "tvuikit/index.css";
 import "./globals.css";
 
 export default function RootLayout({
@@ -23,11 +21,9 @@ export default function RootLayout({
           "flex flex-col min-h-screen",
         ].join(" ")}
       >
-        <ThemeProvider theme={theme}>
-          <Header></Header>
-          {children}
-          <Footer></Footer>
-        </ThemeProvider>
+        <Header></Header>
+        {children}
+        <Footer></Footer>
       </body>
     </html>
   );

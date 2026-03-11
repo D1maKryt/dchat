@@ -1,17 +1,14 @@
-import Link from "next/link";
+"use client"
 
 import { Main } from "@/layout";
+import { DIV_PROPERTIES } from "@/properties";
 
-const HomePage = () => {
+import Link from "next/link";
+
+const Page = () => {
   return (
-    <Main className="flex flex-col items-center justify-center">
-      <div
-        className={[
-          "flex flex-col h-fit w-fit items-center",
-          "p-4 gap-2 rounded-2xl",
-          "bg-(--bg-section)",
-        ].join(" ")}
-      >
+    <Main itemsCenter>
+      <div {...DIV_PROPERTIES.BASE_SECTION}>
         <h4>Добро пожаловать в DChat</h4>
         <p className="max-w-100">
           Это удобный и защищённый анонимный чат для хорошего общения.
@@ -30,4 +27,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Page;

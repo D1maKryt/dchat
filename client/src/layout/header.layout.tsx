@@ -1,8 +1,12 @@
 "use client"
 
-import { Button } from "@mui/material";
+import { Button } from "tvuikit";
+
+import { useRouter } from "next/navigation";
 
 export const Header = () => {
+  const router = useRouter();
+
   return (
     <header
       className={[
@@ -12,11 +16,11 @@ export const Header = () => {
     >
       <h3>D Chat</h3>
       <div className="flex gap-4">
-        <Button variant="contained" href="/login" color="primary">
+        <Button onClick={() => router.push("/login")}>
           Войти
         </Button>
 
-        <Button variant="contained" href="/register" color="primary">
+        <Button onClick={() => router.push("/register")}>
           Зарегистрироваться
         </Button>
       </div>
