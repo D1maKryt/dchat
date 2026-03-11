@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client"
+
+import { Button } from "@mui/material";
 
 export const Header = () => {
   return (
@@ -9,19 +11,14 @@ export const Header = () => {
       ].join(" ")}
     >
       <h3>D Chat</h3>
-      <div>
-        <Link
-          href="/login"
-          className="px-4 py-2 mr-2 bg-foreground text-component rounded"
-        >
+      <div className="flex gap-4">
+        <Button variant="contained" href="/login" color="primary">
           Войти
-        </Link>
-        <Link
-          href="/register"
-          className="px-4 py-2 bg-component text-foreground rounded"
-        >
+        </Button>
+
+        <Button variant="contained" href="/register" color="primary">
           Зарегистрироваться
-        </Link>
+        </Button>
       </div>
     </header>
   );
