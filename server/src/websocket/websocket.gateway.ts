@@ -10,9 +10,8 @@ import { WebsocketService } from './websocket.service';
 import { SendMessageDTO } from './dto/SendMessageDTO';
 
 import { Server, Socket } from 'socket.io';
-import { log } from 'node:console';
 
-@WebSocketGateway({ cors: { origin: '*' } })
+@WebSocketGateway()
 export class WebsocketGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
