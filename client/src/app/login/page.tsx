@@ -13,15 +13,15 @@ const Page = () => {
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // const { email, username, password } = Object.fromEntries(new FormData(event.currentTarget).entries());
+    // const { login, password } = Object.fromEntries(new FormData(event.currentTarget).entries());
   }
 
   return (
     <Main itemsCenter>
       <div {...DIV_PROPERTIES.BASE_SECTION}>
         <div className="flex flex-col items-center">
-          <h5>Регистрация аккаунта</h5>
-          <span className="text-mini">Уже есть аккаунт? <Link href="/login">Войти</Link></span>
+          <h5>Вход в аккаунт</h5>
+          <span className="text-mini">Нет аккаунта? <Link href="/login">Регистрация</Link></span>
         </div>
 
         <form
@@ -29,20 +29,10 @@ const Page = () => {
           onSubmit={handleSubmit}
         >
           <div className="flex flex-col">
-            <span>Username</span>
+            <span>Username or email</span>
             <Input
-              name="username"
+              name="login"
               placeholder="coolusername34"
-              required
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <span>Email</span>
-            <Input
-              name="email"
-              type="email"
-              placeholder="cool@gmail.com"
               required
             />
           </div>

@@ -1,7 +1,7 @@
 "use client"
 
-import { Main } from "@/layout";
 import { DIV_PROPERTIES } from "@/properties";
+import { Main } from "@/layout";
 
 import Link from "next/link";
 

@@ -1,9 +1,9 @@
 import type { Authors } from "@/types";
 
 import { Authors as AuthorsEnum, Services } from "@/enums";
+import { FooterAuthorLinksList } from "@/components";
 
 import { FaGithub, FaGlobe } from "react-icons/fa";
-import { FooterAuthorLinksList } from "@/components/utils/footer-authors-list.component";
 
 export const AUTHORS: Authors = {
   [AuthorsEnum.Dima]: [
