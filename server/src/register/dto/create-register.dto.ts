@@ -38,3 +38,7 @@ export class codeDTO {
   @ApiProperty()
   code?: string;
 }
+export class DTOConfirm {
+  username: string;
+  code: string;
+}
