@@ -9,11 +9,20 @@ import { Button, Input } from "tvuikit";
 
 import Link from "next/link";
 
+import { login } from "@/api/login";
+
 const Page = () => {
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // const { login, password } = Object.fromEntries(new FormData(event.currentTarget).entries());
+    const { login: username, password } = Object.fromEntries(new FormData(event.currentTarget).entries());
+    
+    const user = await login({
+      username: username.toString(),
+      password: password.toString()
+    });
+
+    console.log({ user });
   }
 
   return (
@@ -29,7 +38,7 @@ const Page = () => {
           onSubmit={handleSubmit}
         >
           <div className="flex flex-col">
-            <span>Username or email</span>
+            <span>Username</span>
             <Input
               name="login"
               placeholder="coolusername34"

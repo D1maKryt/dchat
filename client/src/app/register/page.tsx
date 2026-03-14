@@ -9,11 +9,20 @@ import { Button, Input } from "tvuikit";
 
 import Link from "next/link";
 
+import { register } from "@/api/register";
+
 const Page = () => {
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // const { email, username, password } = Object.fromEntries(new FormData(event.currentTarget).entries());
+    const { username, password } = Object.fromEntries(new FormData(event.currentTarget).entries());
+
+    const user = await register({
+      username: username.toString(),
+      password: password.toString()
+    });
+
+    console.log({ user });
   }
 
   return (
@@ -33,16 +42,6 @@ const Page = () => {
             <Input
               name="username"
               placeholder="coolusername34"
-              required
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <span>Email</span>
-            <Input
-              name="email"
-              type="email"
-              placeholder="cool@gmail.com"
               required
             />
           </div>
