@@ -55,7 +55,7 @@ export const endpointRequest = async ({
 
     return {
       data: await response.json(),
-      type: "successed"
+      type: "successed",
     } as const;
   } catch (error) {
     console.error(error);

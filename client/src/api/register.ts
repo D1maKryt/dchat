@@ -1,11 +1,11 @@
-"use server"
+"use server";
 
-import type { RegisterUser, User } from "@/types"
+import type { RegisterUser, User } from "@/types";
 import { endpointRequestOrNull } from "./endpoint-request";
 
 import { cookies } from "next/headers";
 
-export const register = async (user: RegisterUser): Promise<User|null> => {
+export const register = async (user: RegisterUser): Promise<User | null> => {
   const cookie = await cookies();
 
   const data = await endpointRequestOrNull({
@@ -15,7 +15,7 @@ export const register = async (user: RegisterUser): Promise<User|null> => {
       method: "POST",
       body: JSON.stringify(user),
     },
-    statusResponse: 201
+    statusResponse: 201,
   });
 
   if (!data) {
@@ -26,4 +26,4 @@ export const register = async (user: RegisterUser): Promise<User|null> => {
   cookie.set("user", JSON.stringify(data.user));
 
   return data.user;
-}
+};

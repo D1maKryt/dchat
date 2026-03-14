@@ -11,13 +11,13 @@
   --bg-smooth-light: #333333;
   --bg-smooth-ce: #111111ce;
   --bg-card: #353535;
-  
+
   --bg-default: #2c2c2c;
   --bg-section: #202020;
   --bg-component: #464646;
-  
+
   --fg-default: #eeeeee;
-  
+
   --fg-text: var(--fg-default);
   --fg-mini-text: #b3b3b3;
   --fg-mini-text-30: #b3b3b330;

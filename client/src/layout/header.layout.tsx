@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "tvuikit";
 
@@ -16,9 +16,7 @@ export const Header = () => {
     >
       <h3>D Chat</h3>
       <div className="flex gap-4">
-        <Button onClick={() => router.push("/login")}>
-          Войти
-        </Button>
+        <Button onClick={() => router.push("/login")}>Войти</Button>
 
         <Button onClick={() => router.push("/register")}>
           Зарегистрироваться

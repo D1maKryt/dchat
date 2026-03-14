@@ -17,4 +17,4 @@ export const getToken = cache(async () => {
 export const setToken = async (token: string) => {
   const cookie = await cookies();
   return cookie.set("token", token);
-}
+};

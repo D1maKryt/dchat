@@ -6,6 +6,8 @@ export const DIV_PROPERTIES = {
       "flex flex-col h-fit w-fit items-center",
       "p-4 gap-2 rounded-2xl",
       "bg-(--bg-section)",
-    ].filter(Boolean).join(" ")
-  }
+    ]
+      .filter(Boolean)
+      .join(" "),
+  },
 } as const satisfies Record<string, DivProperties>;

@@ -1,13 +1,13 @@
-"use server"
+"use server";
 
 import type { User } from "@/types";
 
 import { cookies } from "next/headers";
-import { cache } from "react"
+import { cache } from "react";
 
-export const getUser = cache(async (): Promise<User|null> => {
+export const getUser = cache(async (): Promise<User | null> => {
   const cookie = await cookies();
-  
+
   const data = cookie.get("user");
   if (!data) {
     return null;

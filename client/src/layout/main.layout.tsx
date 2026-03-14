@@ -17,8 +17,10 @@ export const Main = ({
       className={[
         "mx-4 h-full flex-1",
         centringItems && CENTER_ITEMS,
-        className
-      ].filter(Boolean).join(" ")}
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       {...properties}
     >
       {children}

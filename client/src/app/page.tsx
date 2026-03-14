@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { DIV_PROPERTIES } from "@/properties";
 import { Main } from "@/layout";

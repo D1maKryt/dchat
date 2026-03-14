@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import type { LoginUser } from "@/types";
 import { endpointRequestOrNull } from "./endpoint-request";
@@ -15,7 +15,7 @@ export const login = async (user: LoginUser) => {
       method: "POST",
       body: JSON.stringify(user),
     },
-    statusResponse: 201
+    statusResponse: 201,
   });
 
   if (!data) {
@@ -26,4 +26,4 @@ export const login = async (user: LoginUser) => {
   cookie.set("user", JSON.stringify(data[1]));
 
   return data[1];
-}
+};

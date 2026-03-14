@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import type { TwoFaData } from "@/types";
 import { endpointRequestOrNull } from "./endpoint-request";
@@ -9,7 +9,7 @@ export const getTwoFa = async (username: string): Promise<TwoFaData | null> => {
     cache: false,
     init: {
       method: "POST",
-      body: JSON.stringify({username})
+      body: JSON.stringify({ username }),
     },
     statusResponse: 201,
   });
@@ -19,7 +19,7 @@ export const getTwoFa = async (username: string): Promise<TwoFaData | null> => {
   }
 
   return data;
-}
+};
 
 export const confirmTwoFa = async (username: string, code: string) => {
   const data = await endpointRequestOrNull({
@@ -27,7 +27,7 @@ export const confirmTwoFa = async (username: string, code: string) => {
     cache: false,
     init: {
       method: "POST",
-      body: JSON.stringify({username, code})
+      body: JSON.stringify({ username, code }),
     },
     statusResponse: 201,
   });
@@ -37,4 +37,4 @@ export const confirmTwoFa = async (username: string, code: string) => {
   }
 
   return data;
-}
+};
