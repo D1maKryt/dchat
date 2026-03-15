@@ -1,7 +1,7 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.serves';
 import { TwoFactorAuthService } from './2fa.service';
-import type { Response } from 'express';
+import { DTOConfirm } from './dto/create-register.dto';
 
 @Controller('TwoFactorAuth')
 export class TwoFactorAuthController {
@@ -17,12 +17,8 @@ export class TwoFactorAuthController {
   }
 
   @Post('2faConfirm')
-  async confirm(
-    @Body() code: string,
-    @Body('username') username: string,
-    @Res() res: Response,
-  ) {
+  async confirm(@Body() { username, code }: DTOConfirm) {
     const data = await this.TwofaS.confirm(code, username);
-    return res.send();
+    return data;
   }
 }

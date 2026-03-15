@@ -31,21 +31,17 @@ export class RegisterController {
     console.log(data.username);
     const reg = await this.registerService.register(data);
 
-    return res.send(reg);
+    return reg;
   }
   @Post('login')
-  async auth(
-    @Body() data: CreateRegisterDto,
-    @Res() res: Response,
-    @Body() code: string,
-  ) {
+  async auth(@Body() data: CreateRegisterDto, @Body('code') code: string) {
     const auth = await this.registerService.auth(data, code);
-    return res.json(['Успешная аунтификация', auth]);
+    return auth;
   }
   @Get('check')
-  async checkMe(@Body() data: CreateRegisterDto, @Res() res: Response) {
+  async checkMe(@Body() data: CreateRegisterDto) {
     const check = await this.registerService.checkMe(data);
-    return res.send(['Пользователь найден:', check]);
+    return check;
   }
 
   @Get('google/redirect')
