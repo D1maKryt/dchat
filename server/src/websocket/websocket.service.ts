@@ -6,9 +6,9 @@ import { SendMessageDTO } from './dto/SendMessageDTO';
 export class WebsocketService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async SendMessage(dto: SendMessageDTO) {
+  async SendMessage(massage: SendMessageDTO) {
     const massages = await this.prisma.chat.create({
-      data: { massage: dto.massage },
+      data: { massage: massage.massage },
     });
     return massages;
   }

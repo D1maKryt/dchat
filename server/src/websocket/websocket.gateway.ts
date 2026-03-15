@@ -11,7 +11,7 @@ import { SendMessageDTO } from './dto/SendMessageDTO';
 
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: '*' } })
 export class WebsocketGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -26,12 +26,11 @@ export class WebsocketGateway
   }
 
   @SubscribeMessage('send')
-  async handleMessage(@MessageBody() dto: SendMessageDTO) {
-    console.log(dto);
-    const message = await this.websocketService.SendMessage(dto);
+  async handleMessage(@MessageBody() massage: SendMessageDTO) {
+    const messages = await this.websocketService.SendMessage(massage);
+    console.log(messages);
 
-    return message;
-
-    // this.server.emit('', message);
+    this.server.emit('OnMassage', { messages });
+    return messages;
   }
 }

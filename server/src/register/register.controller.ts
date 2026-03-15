@@ -23,11 +23,7 @@ export class RegisterController {
     private readonly strategies: Strategies,
   ) {}
   @Post('register')
-  async register(
-    @Body(new ValidationPipe()) data: CreateRegisterDto,
-
-    @Res() res: Response,
-  ) {
+  async register(@Body(new ValidationPipe()) data: CreateRegisterDto) {
     console.log(data.username);
     const reg = await this.registerService.register(data);
 

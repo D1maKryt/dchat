@@ -61,7 +61,7 @@ export class TwoFactorAuthService {
       data: { isTwoFactorAuthenticationEnabled: true },
     });
 
-    return;
+    return updateUser;
   }
 
   async Verefication(username: string, code?: string) {
