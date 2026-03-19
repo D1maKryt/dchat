@@ -49,7 +49,7 @@ export class TwoFactorAuthService {
       throw new HttpException('Такого пользователя нету', HttpStatus.FORBIDDEN);
     }
 
-    const isValid = await authenticator.verify({
+    const isValid = authenticator.verify({
       token: code,
       secret: user.twoFactorAuthenticationSecret,
     });
@@ -75,10 +75,17 @@ export class TwoFactorAuthService {
       throw new HttpException('Вы не ввели 2fa код', HttpStatus.FORBIDDEN);
     }
 
-    const isValid = await authenticator.verify({
+    const Verify = authenticator.verify({
       token: code,
       secret: pretendent?.twoFactorAuthenticationSecret,
     });
+
+    if (Verify === false) {
+      throw new HttpException(
+        'Введен неправильный код',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
 
     return pretendent;
   }

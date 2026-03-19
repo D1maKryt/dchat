@@ -8,7 +8,7 @@ import {
 import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
-import { authenticator } from '@otplib/preset-v11';
+
 import { TwoFactorAuthService } from 'src/register/2fa.service';
 
 @Injectable()
@@ -78,7 +78,7 @@ export class Strategies {
       throw new HttpException('Пароль неверный', HttpStatus.FORBIDDEN);
     }
     if (pretendent.isTwoFactorAuthenticationEnabled === true) {
-      this.TwoFa.Verefication(username, code);
+      return this.TwoFa.Verefication(username, code);
     }
     return pretendent;
   }

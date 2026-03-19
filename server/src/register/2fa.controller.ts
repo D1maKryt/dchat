@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.serves';
 import { TwoFactorAuthService } from './2fa.service';
 import { DTOConfirm } from './dto/create-register.dto';

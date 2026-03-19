@@ -18,10 +18,27 @@ model User {
   twoFactorAuthenticationSecret String? 
   isTwoFactorAuthenticationEnabled Boolean? @default(false)
   createdAt    DateTime @default(now())
+
+  chats Chat[] 
 }
 
 model Chat {
   id        Int      @id @default(autoincrement())
   massage   String
   createdAt DateTime @default(now())
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  
+  roomId    Int
+  room      ChatRoom     @relation(fields: [roomId], references: [id])
+}
+
+model ChatRoom  { 
+  id        Int      @id @default(autoincrement())
+  roomeID String
+  createdAt DateTime? @default(now())
+
+   chats Chat[] 
 }

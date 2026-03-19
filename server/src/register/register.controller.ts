@@ -10,18 +10,15 @@ import {
   Next,
 } from '@nestjs/common';
 import { RegisterService } from './register.service';
-import { CreateRegisterDto, codeDTO } from './dto/create-register.dto';
+import { CreateRegisterDto } from './dto/create-register.dto';
 import type { Response, Request, NextFunction } from 'express';
 import { GoogleAuthGuard } from 'src/strategies/GvardStrategies';
-import { Strategies } from 'src/strategies/strategies';
-import passport = require('passport');
+
+import passport from 'passport';
 
 @Controller('auth')
 export class RegisterController {
-  constructor(
-    private readonly registerService: RegisterService,
-    private readonly strategies: Strategies,
-  ) {}
+  constructor(private readonly registerService: RegisterService) {}
   @Post('register')
   async register(@Body(new ValidationPipe()) data: CreateRegisterDto) {
     console.log(data.username);
@@ -41,20 +38,22 @@ export class RegisterController {
   }
 
   @Get('google/redirect')
-  async GetRedirectGoogle(
+  GetRedirectGoogle(
     @Req() req: Request,
     @Res() res: Response,
     @Next() next: NextFunction,
   ) {
-    passport.authenticate('google', (error: boolean, data: unknown | null) => {
+    passport.authenticate('google', (error: boolean, data: unknown) => {
       console.log(data, error);
+
       return res.send(data);
     })(req, res, next);
+    return;
   }
 
   @Get('google/login')
   @UseGuards(GoogleAuthGuard)
-  async GetGoogle() {
+  GetGoogle() {
     return console.log('Ok');
   }
 }
