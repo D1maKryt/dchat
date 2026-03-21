@@ -13,7 +13,6 @@ import { RegisterService } from './register.service';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import type { Response, Request, NextFunction } from 'express';
 import { GoogleAuthGuard } from 'src/strategies/GvardStrategies';
-
 import passport from 'passport';
 
 @Controller('auth')
