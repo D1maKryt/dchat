@@ -5,13 +5,14 @@ import {
   WebSocketServer,
   SubscribeMessage,
   MessageBody,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { WebsocketService } from './websocket.service';
 import { SendMessageDTO } from './dto/SendMessageDTO';
 
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: '*' } })
 export class WebsocketGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -26,12 +27,24 @@ export class WebsocketGateway
   }
 
   @SubscribeMessage('send')
-  async handleMessage(@MessageBody() dto: SendMessageDTO) {
-    console.log(dto);
-    const message = await this.websocketService.SendMessage(dto);
+  async handleMessage(
+    @MessageBody() massage: SendMessageDTO,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const messages = await this.websocketService.SendMessage(massage, client);
 
-    return message;
+    return messages;
+  }
 
-    // this.server.emit('', message);
+  @SubscribeMessage('create')
+  async new_room(@MessageBody() data: string) {
+    const createRoom = await this.websocketService.create(data);
+    return createRoom;
+  }
+
+  @SubscribeMessage('join')
+  async join(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+    const join = await this.websocketService.join(data, client);
+    return join;
   }
 }

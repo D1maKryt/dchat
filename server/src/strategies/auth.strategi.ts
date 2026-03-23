@@ -19,7 +19,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     profile: Profile,
     done: VerifyCallback,
   ): Promise<any> {
-    const { id, displayName } = profile;
+    const { id } = profile;
     let name: string;
 
     if (profile.name) {
@@ -57,7 +57,5 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     if (SingIn) return done(false, SingIn);
     const SingUp = await this.strategies.singUpServes(user);
     if (SingUp) return done(false, SingUp);
-
-    // реализацию поправить
   }
 }

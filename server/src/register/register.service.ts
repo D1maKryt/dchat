@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { CreateRegisterDto, codeDTO } from './dto/create-register.dto';
+import { CreateRegisterDto } from './dto/create-register.dto';
 import { Strategies } from 'src/strategies/strategies';
 import { HttpException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.serves';
@@ -20,7 +20,7 @@ export class RegisterService {
   }
 
   async checkMe(data: CreateRegisterDto) {
-    const findUser = this.prisma.user.findUnique({
+    const findUser = await this.prisma.user.findUnique({
       where: { name: data.username },
     });
 
