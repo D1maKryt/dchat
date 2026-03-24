@@ -4,9 +4,11 @@ import { MainModule } from './main.module';
 import { json } from 'express';
 import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import logger from 'pino-http';
 
 async function bootstrap() {
   const app = await NestFactory.create(MainModule);
+  app.use(logger());
   app.use(json());
   app.useGlobalPipes(new ValidationPipe());
 

@@ -1,10 +1,10 @@
 import { Headers, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.serves';
+
 import JWT from 'jsonwebtoken';
 
 @Injectable()
 export class GuardRegister {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor() {}
 
   VerefiyGuard(@Headers('token') token: string) {
     try {

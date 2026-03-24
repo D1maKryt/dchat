@@ -4,7 +4,7 @@ import {
   IsNotEmpty,
   IsDefined,
   IsOptional,
-  Min,
+  Length,
 } from 'class-validator';
 
 export class CreateRegisterDto {
@@ -12,13 +12,13 @@ export class CreateRegisterDto {
   @IsString()
   @IsNotEmpty() // Не может быть пустым
   @ApiProperty() // Для генерации openAPI
-  @Min(3)
+  @Length(3, 24)
   username: string;
   @IsDefined()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  @Min(5)
+  @Length(5, 24)
   password: string;
 }
 
@@ -27,7 +27,7 @@ export class CreateRegisterAndServesDTO {
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  @Min(3)
+  @Length(3, 24)
   username: string;
   @ApiProperty()
   @IsString()
@@ -48,7 +48,7 @@ export class CreateServerDTO {
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  @Min(3)
+  @Length(3, 24)
   username: string;
   @ApiProperty()
   @IsString()
@@ -72,7 +72,7 @@ export class DTOConfirm {
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  @Min(3)
+  @Length(3, 24)
   username: string;
   @ApiProperty()
   @IsString()

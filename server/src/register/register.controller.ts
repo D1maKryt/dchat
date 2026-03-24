@@ -12,16 +12,13 @@ import {
 import { RegisterService } from './register.service';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import type { Response, Request, NextFunction } from 'express';
-import { GoogleAuthGuard } from 'src/strategies/GvardStrategies';
-import { GuardRegister } from 'src/guards/guards.register';
+import { GoogleAuthGuard } from 'src/strategies/GuardStrategies';
+
 import passport from 'passport';
 
 @Controller('auth')
 export class RegisterController {
-  constructor(
-    private readonly registerService: RegisterService,
-    private readonly GuardRegister: GuardRegister,
-  ) {}
+  constructor(private readonly registerService: RegisterService) {}
   @Post('register')
   async register(@Body(new ValidationPipe()) data: CreateRegisterDto) {
     console.log(data.username);
@@ -29,7 +26,7 @@ export class RegisterController {
 
     return reg;
   }
-  @UseGuards(GuardRegister)
+
   @Post('login')
   async auth(@Body() data: CreateRegisterDto, @Body('code') code: string) {
     const auth = await this.registerService.auth(data, code);
