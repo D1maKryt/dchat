@@ -18,7 +18,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     refreshToken: string,
     profile: Profile,
     done: VerifyCallback,
-  ): Promise<any> {
+  ) {
     const { id } = profile;
     let name: string;
 

@@ -13,32 +13,34 @@ model User {
   password     String?
   name         String   @unique
   refreshToken String?
-  accessToken  String?
+  accessToken  String?                                           
   Token        String
   twoFactorAuthenticationSecret String? 
   isTwoFactorAuthenticationEnabled Boolean? @default(false)
+ 
   createdAt    DateTime @default(now())
 
-  chats Chat[] 
+  massages Message[] 
 }
 
-model Chat {
-  id        Int      @id @default(autoincrement())
-  massage   String
+model Message {
+  id        String      @id @default(uuid())
+  content   String
   createdAt DateTime @default(now())
 
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
 
   
-  roomId    Int
+  roomId    String
   room      ChatRoom     @relation(fields: [roomId], references: [id])
+	@@map("Chat")
 }
 
 model ChatRoom  { 
-  id        Int      @id @default(autoincrement())
-  roomeID String
+  id        String      @id @default(uuid())
+  name String @map("roomeID")
   createdAt DateTime? @default(now())
 
-   chats Chat[] 
+   messages Message[] 
 }
