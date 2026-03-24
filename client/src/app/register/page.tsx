@@ -1,17 +1,27 @@
 "use client";
 
-import type { SubmitEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 
 import { DIV_PROPERTIES } from "@/properties";
 import { Main } from "@/layout";
 
-import { Button, Input } from "tvuikit";
+import { Button, Input, Switch, useNotifications } from "tvuikit";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { register } from "@/api/register";
 
 const Page = () => {
+  const router = useRouter();
+
+  const [twoFaEnabled, setTwoFaEnabled] = useState<boolean>(false);
+  const { NotificationComponent, notificate } = useNotifications({
+    duration: 3000,
+    delay: 1000,
+    allNotificationsEnabled: false,
+  });
+
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -19,12 +29,24 @@ const Page = () => {
       new FormData(event.currentTarget).entries(),
     );
 
-    const user = await register({
+    const data = await register({
       username: username.toString(),
       password: password.toString(),
     });
 
-    console.log({ user });
+    if (!data) {
+      return notificate("Не удалось зарегистрироваться.");
+    }
+
+    if (typeof data === "string") {
+      return notificate(data);
+    }
+
+    if (twoFaEnabled) {
+      return router.push("/2fa");
+    }
+
+    return router.push("/chat");
   };
 
   return (
@@ -46,6 +68,14 @@ const Page = () => {
             <Input name="username" placeholder="coolusername34" required />
           </div>
 
+          <div className="flex flex-col w-full gap-1">
+            <span>Включить 2FA?</span>
+            <Switch
+              onClick={() => setTwoFaEnabled((previous) => !previous)}
+              className="bg-(--bg-default)"
+            />
+          </div>
+
           <div className="flex flex-col">
             <span>Password</span>
             <Input
@@ -61,6 +91,8 @@ const Page = () => {
           </Button>
         </form>
       </div>
+
+      {NotificationComponent}
     </Main>
   );
 };

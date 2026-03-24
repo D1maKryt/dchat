@@ -1,14 +1,22 @@
 "use server";
 
 import type { RegisterUser, User } from "@/types";
-import { endpointRequestOrNull } from "./endpoint-request";
+import { endpointRequest } from "./endpoint-request";
 
 import { cookies } from "next/headers";
 
-export const register = async (user: RegisterUser): Promise<User | null> => {
+const resolveError = (message: string) => {
+  if (message === "User уже создан") {
+    return "Не удалось зарегистрироваться, пользователь с таким именем уже существует.";
+  }
+
+  return null;
+}
+
+export const register = async (user: RegisterUser): Promise<User | string | null> => {
   const cookie = await cookies();
 
-  const data = await endpointRequestOrNull({
+  const { data, message } = await endpointRequest({
     endpoint: "/auth/register",
     cache: false,
     init: {
@@ -19,11 +27,11 @@ export const register = async (user: RegisterUser): Promise<User | null> => {
   });
 
   if (!data) {
-    return null;
+    return resolveError(message);
   }
 
-  cookie.set("token", data.user.Token);
-  cookie.set("user", JSON.stringify(data.user));
+  cookie.set("token", data.Token);
+  cookie.set("user", JSON.stringify(data));
 
-  return data.user;
+  return data;
 };

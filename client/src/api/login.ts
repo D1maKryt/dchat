@@ -1,14 +1,18 @@
 "use server";
 
-import type { LoginUser } from "@/types";
-import { endpointRequestOrNull } from "./endpoint-request";
+import type { LoginUser, User } from "@/types";
+import { endpointRequest } from "./endpoint-request";
 
 import { cookies } from "next/headers";
 
-export const login = async (user: LoginUser) => {
+const resolveError = (message: string): string|null => {
+  return null;
+}
+
+export const login = async (user: LoginUser): Promise<User | null | string> => {
   const cookie = await cookies();
 
-  const data = await endpointRequestOrNull({
+  const { data, message } = await endpointRequest({
     endpoint: "/auth/login",
     cache: false,
     init: {
@@ -19,11 +23,11 @@ export const login = async (user: LoginUser) => {
   });
 
   if (!data) {
-    return null;
+    return resolveError(message);
   }
 
-  cookie.set("token", data[1].Token);
-  cookie.set("user", JSON.stringify(data[1]));
+  cookie.set("token", data.Token);
+  cookie.set("user", JSON.stringify(data));
 
-  return data[1];
+  return data;
 };

@@ -1,6 +1,6 @@
-export type User = {
-  password: string | null;
+export interface User {
   id: string;
+  password: string | null;
   name: string;
   refreshToken: string | null;
   accessToken: string | null;
@@ -8,7 +8,7 @@ export type User = {
   twoFactorAuthenticationSecret: string | null;
   isTwoFactorAuthenticationEnabled: boolean | null;
   createdAt: Date;
-};
+}
 
 export type RegisterUser = {
   username: string;

@@ -5,13 +5,21 @@ import type { SubmitEvent } from "react";
 import { DIV_PROPERTIES } from "@/properties";
 import { Main } from "@/layout";
 
-import { Button, Input } from "tvuikit";
+import { Button, Input, useNotifications } from "tvuikit";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { login } from "@/api/login";
 
 const Page = () => {
+  const router = useRouter();
+  const { NotificationComponent, notificate } = useNotifications({
+    duration: 3000,
+    delay: 1000,
+    allNotificationsEnabled: false
+  });
+
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -19,12 +27,20 @@ const Page = () => {
       new FormData(event.currentTarget).entries(),
     );
 
-    const user = await login({
+    const data = await login({
       username: username.toString(),
       password: password.toString(),
     });
 
-    console.log({ user });
+    if (!data) {
+      return notificate("Не удалось войти в аккаунт.");
+    }
+
+    if (typeof data === "string") {
+      return notificate(data);
+    }
+
+    return router.push("/chat");
   };
 
   return (
@@ -61,6 +77,8 @@ const Page = () => {
           </Button>
         </form>
       </div>
+      
+      {NotificationComponent}
     </Main>
   );
 };
