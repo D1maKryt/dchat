@@ -5,9 +5,9 @@ import { endpointRequest } from "./endpoint-request";
 
 import { cookies } from "next/headers";
 
-const resolveError = (message: string): string|null => {
+const resolveError = (message: string): string | null => {
   return null;
-}
+};
 
 export const login = async (user: LoginUser): Promise<User | null | string> => {
   const cookie = await cookies();

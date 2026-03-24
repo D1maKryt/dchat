@@ -17,7 +17,7 @@ const Page = () => {
   const { NotificationComponent, notificate } = useNotifications({
     duration: 3000,
     delay: 1000,
-    allNotificationsEnabled: false
+    allNotificationsEnabled: false,
   });
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -77,7 +77,7 @@ const Page = () => {
           </Button>
         </form>
       </div>
-      
+
       {NotificationComponent}
     </Main>
   );

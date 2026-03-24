@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import type { User } from "@/types";
 
@@ -13,7 +13,7 @@ import { getUser } from "@/api/user";
 const Page = () => {
   const router = useRouter();
 
-  const [user, setUser] = useState<User|null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Page = () => {
       setUser(user);
       setLoaded(true);
     })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!loaded) {
@@ -35,17 +35,13 @@ const Page = () => {
         <CircleProgress />
       </Main>
     );
-  };
+  }
 
   if (!user) {
     return router.push("/register");
   }
 
-  return (
-    <Main>
-      Привет, {user.name}!
-    </Main>
-  )
+  return <Main>Привет, {user.name}!</Main>;
 };
 
 export default Page;

@@ -1,11 +1,19 @@
-"use client"
+"use client";
 
 import type { User } from "@/types";
 
 import { useState } from "react";
 import { logout } from "@/api/logout";
 
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, CircleProgress, Modal, Active } from "tvuikit";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  CircleProgress,
+  Modal,
+  Active,
+} from "tvuikit";
 
 export type UserHeaderProperties = {
   user: User;
@@ -16,12 +24,12 @@ export const UserHeader = ({ user }: UserHeaderProperties) => {
 
   const handleLogout = async () => {
     setLogoutClicked(true);
-    
+
     await logout();
 
     setLogoutClicked(false);
     window.location.reload();
-  }
+  };
 
   return (
     <>
@@ -31,9 +39,7 @@ export const UserHeader = ({ user }: UserHeaderProperties) => {
         </DropdownTrigger>
 
         <DropdownMenu>
-          <DropdownItem onClick={handleLogout}>
-            Выйти с аккаунта
-          </DropdownItem>
+          <DropdownItem onClick={handleLogout}>Выйти с аккаунта</DropdownItem>
         </DropdownMenu>
       </Dropdown>
 
@@ -47,5 +53,5 @@ export const UserHeader = ({ user }: UserHeaderProperties) => {
         </Modal>
       </Active>
     </>
-  )
-}
+  );
+};

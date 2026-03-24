@@ -1,7 +1,7 @@
-"use server"
+"use server";
 
 import { refresh } from "next/cache";
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 
 export const logout = async () => {
   const cookie = await cookies();
@@ -12,4 +12,4 @@ export const logout = async () => {
   refresh();
 
   return true;
-}
+};

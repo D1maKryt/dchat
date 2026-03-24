@@ -11,9 +11,11 @@ const resolveError = (message: string) => {
   }
 
   return null;
-}
+};
 
-export const register = async (user: RegisterUser): Promise<User | string | null> => {
+export const register = async (
+  user: RegisterUser,
+): Promise<User | string | null> => {
   const cookie = await cookies();
 
   const { data, message } = await endpointRequest({

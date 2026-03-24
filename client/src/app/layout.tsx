@@ -14,16 +14,14 @@ import { usePathname } from "next/navigation";
 import "tvuikit/index.css";
 import "./globals.css";
 
-const NOLAYOUT_PATHS = [
-  /\/chat.*/
-];
+const NOLAYOUT_PATHS = [/\/chat.*/];
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [user, setUser] = useState<User|null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
   const pathname = usePathname();
 
@@ -34,7 +32,7 @@ export default function RootLayout({
       setLoaded(true);
     })();
   }, []);
-  
+
   if (!loaded) {
     return (
       <html
@@ -42,14 +40,18 @@ export default function RootLayout({
         data-shiftshift-double-shift="false"
         lang="ru"
       >
-        <body className={["flex flex-col min-h-screen items-center justify-center"].join(" ")}>
+        <body
+          className={[
+            "flex flex-col min-h-screen items-center justify-center",
+          ].join(" ")}
+        >
           <CircleProgress size={48} />
         </body>
-      </html> 
-    )
+      </html>
+    );
   }
 
-  const isNolayoutPath = NOLAYOUT_PATHS.some(path => path.test(pathname));
+  const isNolayoutPath = NOLAYOUT_PATHS.some((path) => path.test(pathname));
   if (isNolayoutPath) {
     return (
       <html
@@ -57,12 +59,10 @@ export default function RootLayout({
         data-shiftshift-double-shift="false"
         lang="ru"
       >
-        <body className={["py-8 px-4"].join(" ")}>
-          {children}
-        </body>
+        <body className={["py-8 px-4"].join(" ")}>{children}</body>
       </html>
     );
-  };
+  }
 
   return (
     <html

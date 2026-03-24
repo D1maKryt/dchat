@@ -7,11 +7,9 @@ import { RegisterHeader } from "./register-header.layout";
 
 export type HeaderProperties = {
   user?: User | null;
-}
+};
 
-export const Header = ({
-  user = null
-}: HeaderProperties) => {
+export const Header = ({ user = null }: HeaderProperties) => {
   return (
     <header
       className={[
@@ -21,11 +19,7 @@ export const Header = ({
     >
       <h3>D Chat</h3>
       <div className="flex gap-4">
-        {
-          user
-            ? <UserHeader user={user} />
-            : <RegisterHeader />
-        }
+        {user ? <UserHeader user={user} /> : <RegisterHeader />}
       </div>
     </header>
   );

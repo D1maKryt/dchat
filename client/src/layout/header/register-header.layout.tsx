@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import { Button } from "tvuikit";
@@ -13,5 +13,5 @@ export const RegisterHeader = () => {
         Зарегистрироваться
       </Button>
     </>
-  )
-}
+  );
+};
