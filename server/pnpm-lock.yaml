@@ -65,6 +65,9 @@ importers:
       class-validator:
         specifier: ^0.15.1
         version: 0.15.1
+      fbit-field:
+        specifier: ^2.0.1
+        version: 2.0.1
       jsonwebtoken:
         specifier: ^9.0.3
         version: 9.0.3
@@ -2048,6 +2051,10 @@ packages:
 
   fb-watchman@2.0.2:
     resolution: {integrity: sha512-p5161BqbuCaSnB8jIbzQHOlpgsPmK5rJVDfDKO91Axs5NC1uu3HRQm6wt9cd9/+GtQQIO53JdGXXoyDpTAsgYA==}
+
+  fbit-field@2.0.1:
+    resolution: {integrity: sha512-vDzW/AOXeag5xnzrvSh4eDRoKabj6eIV6cvrqfwK8SONj+CZ/ZfI+mMwFack3S1yu88fhkC3ejCjBJSVy9KW8Q==}
+    engines: {node: '>=12.0.0'}
 
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
@@ -5773,6 +5780,8 @@ snapshots:
   fb-watchman@2.0.2:
     dependencies:
       bser: 2.1.1
+
+  fbit-field@2.0.1: {}
 
   fdir@6.5.0(picomatch@4.0.3):
     optionalDependencies:

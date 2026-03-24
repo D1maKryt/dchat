@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.serves';
 import { SendMessageDTO, ChatRoom } from './dto/SendMessageDTO';
-import { v4 as uuid } from 'uuid';
+
 import { ConnectedSocket } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 
@@ -9,21 +9,22 @@ import { Socket } from 'socket.io';
 export class WebsocketService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async SendMessage(
-    massage: SendMessageDTO,
-    @ConnectedSocket() client: Socket,
-  ) {
-    const massages = await this.prisma.chat.create({
-      data: { massage: massage.massage },
+  async SendMessage(massage: SendMessageDTO, client: Socket) {
+    const massages = await this.prisma.message.create({
+      data: {
+        content: massage.massage,
+        roomId: massage.roomID,
+        authorId: massage.authorID,
+      },
     });
 
-    client.to('').emit('msg', massages);
+    client.to(massage.roomID).emit('msg', massages);
     return massages;
   }
 
   async create(data: string) {
-    const room = (await this.prisma.chatRoom.findFirst({
-      where: { roomeID: data },
+    const room = (await this.prisma.chatRoom.findUnique({
+      where: { id: data },
     })) as ChatRoom | null;
 
     if (room) {
@@ -33,10 +34,10 @@ export class WebsocketService {
       );
     }
 
-    const roomID = uuid();
+    const roomID = data;
 
     const create = await this.prisma.chatRoom.create({
-      data: { roomeID: roomID },
+      data: { name: roomID },
     });
 
     return create;
@@ -44,12 +45,12 @@ export class WebsocketService {
 
   async join(data: string, @ConnectedSocket() client: Socket) {
     const room = (await this.prisma.chatRoom.findFirst({
-      where: { roomeID: data },
+      where: { name: data },
     })) as ChatRoom | null;
 
-    if (room) {
+    if (!room) {
       throw new HttpException(
-        'Такая комната уже существует',
+        'Такая комната не существует',
         HttpStatus.FORBIDDEN,
       );
     }
