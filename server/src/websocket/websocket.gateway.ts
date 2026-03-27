@@ -37,8 +37,11 @@ export class WebsocketGateway
   }
 
   @SubscribeMessage('create')
-  async new_room(@MessageBody() data: string) {
-    const createRoom = await this.websocketService.create(data);
+  async new_room(
+    @MessageBody() data: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const createRoom = await this.websocketService.create(data, client);
     return createRoom;
   }
 
