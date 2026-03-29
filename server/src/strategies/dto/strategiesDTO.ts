@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsDefined, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsDefined, Length } from 'class-validator';
 export class strategiesSingInDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsDefined()
-  @Min(5)
+  @Length(3, 24)
   @IsString()
   name: string;
   @ApiProperty()

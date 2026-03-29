@@ -21,6 +21,15 @@ model User {
   createdAt    DateTime @default(now())
 
   massages Message[] 
+    roles UsersOnRoles[] 
+}
+
+model Role {
+  id String @id @default(uuid())
+  name String @unique
+  createdAt DateTime @default(now())
+
+  users UsersOnRoles[]
 }
 
 model Message {
@@ -43,4 +52,15 @@ model ChatRoom  {
   createdAt DateTime? @default(now())
 
    messages Message[] 
+}
+
+
+model UsersOnRoles {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String      // Внешний ключ на User
+  role       Role     @relation(fields: [roleId], references: [id])
+  roleId     String      // Внешний ключ на Role
+  assignedAt DateTime @default(now()) // Доп. поле (например, дата назначения)
+
+  @@id([userId, roleId]) // Составной ключ, чтобы нельзя было дать одну роль дважды
 }

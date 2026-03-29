@@ -5,7 +5,6 @@ import { APP_PIPE } from '@nestjs/core';
 // import { CacheModule } from '@nestjs/cache-manager';
 // import { redisStore } from 'cache-manager-redis-yet';
 import { AdminPanelModule } from './admin-panel/admin-panel.module';
-import { GuardsModule } from './guards/guards.module';
 
 @Module({
   providers: [
@@ -29,7 +28,6 @@ import { GuardsModule } from './guards/guards.module';
     //   }),
     // }),
     AdminPanelModule,
-    GuardsModule,
   ],
 })
 export class MainModule {}

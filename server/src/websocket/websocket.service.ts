@@ -22,7 +22,7 @@ export class WebsocketService {
     return massages;
   }
 
-  async create(data: string) {
+  async create(data: string, @ConnectedSocket() client: Socket) {
     const room = (await this.prisma.chatRoom.findUnique({
       where: { id: data },
     })) as ChatRoom | null;
@@ -33,12 +33,12 @@ export class WebsocketService {
         HttpStatus.FORBIDDEN,
       );
     }
-
     const roomID = data;
-
     const create = await this.prisma.chatRoom.create({
       data: { name: roomID },
     });
+
+    await client.join(roomID);
 
     return create;
   }
