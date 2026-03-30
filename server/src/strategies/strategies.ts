@@ -40,9 +40,17 @@ export class Strategies {
 
     const id = uuid();
 
-    const generatedToken = JWT.sign({ id: id }, process.env.SECRET!, {
-      expiresIn: '1h',
-    });
+    const generatedToken = JWT.sign(
+      {
+        id: id,
+        roles: 'fd0c226e-25ce-4c1b-a016-db91e2248934',
+        roleAdmin: '8f2d2296-f915-42d7-9f51-cbe5f076bc32',
+      },
+      process.env.SECRET!,
+      {
+        expiresIn: '1h',
+      },
+    );
 
     const createdUser = await this.prisma.user.create({
       data: {
@@ -52,6 +60,11 @@ export class Strategies {
         Token: generatedToken,
         accessToken: accessToken,
         refreshToken: refreshToken,
+        roles: {
+          create: {
+            role: { connect: { id: 'fd0c226e-25ce-4c1b-a016-db91e2248934' } },
+          },
+        },
       },
     });
     return createdUser;

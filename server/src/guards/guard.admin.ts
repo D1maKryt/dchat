@@ -9,10 +9,10 @@ import JWT from 'jsonwebtoken';
 
 import { Request } from 'express';
 import { resolveAuthorization } from 'src/utils/resolve.authorization';
-import { MyTokenPayload } from './dto/dto.role';
+import { MyTokenPayloadAdmin } from './dto/dto.role';
 
 @Injectable()
-export class GuardRole implements CanActivate {
+export class GuardAdmin implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
     const token = request.headers.authorization;
@@ -21,10 +21,12 @@ export class GuardRole implements CanActivate {
     const decoded = JWT.verify(
       ClearToken,
       process.env.SECRET!,
-    ) as MyTokenPayload;
-    if (!decoded.roles.includes('fd0c226e-25ce-4c1b-a016-db91e2248934')) {
-      throw new HttpException('Error role User', HttpStatus.FORBIDDEN);
+    ) as MyTokenPayloadAdmin;
+
+    if (!decoded.roleAdmin.includes('8f2d2296-f915-42d7-9f51-cbe5f076bc32')) {
+      throw new HttpException('Error role Admin', HttpStatus.FORBIDDEN);
     }
+
     return true;
   }
 }

@@ -32,8 +32,14 @@ export class AdminPanelService {
     if (!pretendent) {
       throw new HttpException('Пользователь не найден', HttpStatus.FORBIDDEN);
     }
+    await this.prisma.usersOnRoles.deleteMany({ where: { userId: id } });
     const delUser = this.prisma.user.delete({ where: { id: id } });
     return delUser;
+  }
+
+  async AllDeleteUser() {
+    await this.prisma.usersOnRoles.deleteMany();
+    return await this.prisma.user.deleteMany();
   }
 
   async findUser(data: string) {
@@ -74,9 +80,13 @@ export class AdminPanelService {
     return create;
   }
 
+  async findAllRoleUser() {
+    return await this.prisma.role.findMany();
+  }
+
   async findRoom(idRoome: string) {
     const room = await this.prisma.chatRoom.findFirst({
-      where: { name: idRoome },
+      where: { id: idRoome },
     });
 
     if (!room) {
@@ -91,7 +101,7 @@ export class AdminPanelService {
 
   async DelRoom(idRoome: string) {
     const room = await this.prisma.chatRoom.findFirst({
-      where: { name: idRoome },
+      where: { id: idRoome },
     });
 
     if (!room) {

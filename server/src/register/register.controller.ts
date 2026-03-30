@@ -14,6 +14,8 @@ import { CreateRegisterDto } from './dto/create-register.dto';
 import type { Response, Request, NextFunction } from 'express';
 import { GoogleAuthGuard } from 'src/strategies/GuardStrategies';
 import passport from 'passport';
+import { GuardRegister } from 'src/guards/guards.register';
+import { GuardRole } from 'src/guards/guard.role';
 
 @Controller('auth')
 export class RegisterController {
@@ -26,14 +28,16 @@ export class RegisterController {
 
     return reg;
   }
-
+  @UseGuards(GuardRegister)
+  @UseGuards(GuardRole)
   @Post('login')
   async auth(@Body() data: CreateRegisterDto, @Body('code') code: string) {
     const auth = await this.registerService.auth(data, code);
 
     return auth;
   }
-
+  @UseGuards(GuardRole)
+  @UseGuards(GuardRegister)
   @Get('check')
   async checkMe(@Body() data: CreateRegisterDto) {
     const check = await this.registerService.checkMe(data);

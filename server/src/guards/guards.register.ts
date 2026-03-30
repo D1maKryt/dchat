@@ -33,7 +33,7 @@ import { Request } from 'express';
 import { resolveAuthorization } from 'src/utils/resolve.authorization';
 
 @Injectable()
-export class GuardRole implements CanActivate {
+export class GuardRegister implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
