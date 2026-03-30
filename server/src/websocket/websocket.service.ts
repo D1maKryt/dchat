@@ -43,9 +43,9 @@ export class WebsocketService {
     return create;
   }
 
-  async join(data: string, @ConnectedSocket() client: Socket) {
+  async join(id: string, @ConnectedSocket() client: Socket) {
     const room = (await this.prisma.chatRoom.findFirst({
-      where: { name: data },
+      where: { id: id },
     })) as ChatRoom | null;
 
     if (!room) {
@@ -55,7 +55,7 @@ export class WebsocketService {
       );
     }
 
-    const user_join = client.join(data);
+    const user_join = client.join(id);
     return user_join;
   }
 }

@@ -44,7 +44,6 @@ export class Strategies {
       {
         id: id,
         roles: 'fd0c226e-25ce-4c1b-a016-db91e2248934',
-        roleAdmin: '8f2d2296-f915-42d7-9f51-cbe5f076bc32',
       },
       process.env.SECRET!,
       {
