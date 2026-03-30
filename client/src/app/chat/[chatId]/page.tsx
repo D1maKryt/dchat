@@ -7,21 +7,23 @@ import { Button, CircleProgress, Input } from "tvuikit";
 import { Main } from "@/layout";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { getUser } from "@/api/user";
 import { getToken } from "@/api/token";
-import { findChat } from "@/api/find-chat";
 
 import { DIV_PROPERTIES } from "@/properties";
 import { WEBSCOKET_URL } from "@/constants";
 
 import { io } from "socket.io-client";
+import { findChat } from "@/api/find-chat";
 
 const Page = () => {
+  const { chatId } = useParams<{ chatId: string }>();
   const router = useRouter();
 
   const [token, setToken] = useState<string | null>(null);
+  const [chat, setChat] = useState<ChatRoom | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -29,10 +31,17 @@ const Page = () => {
     (async () => {
       const user = await getUser();
       const token = await getToken();
+      const chat = await findChat(chatId);
+
       if (!user || !token) {
         return router.push("/register");
       }
 
+      if (!chat) {
+        return router.push("/chat");
+      }
+
+      setChat(chat);
       setUser(user);
       setToken(token);
       setLoaded(true);
@@ -46,27 +55,13 @@ const Page = () => {
     }
   });
 
-  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    websocket.emit("join", chatId);
 
-    const { chatId } = Object.fromEntries(
-      new FormData(event.currentTarget).entries(),
-    );
-
-    if (!chatId) {
-      return;
+    return () => {
+      /* websocket.emit("disconnect", chatId); */
     }
-
-    const id = chatId.toString();
-    const chat = await findChat(id);
-    if (chat) {
-      return router.push(`/chat/${chat.id}`);
-    }
-
-    websocket.emit("create", id, (chat: ChatRoom) => {
-      return router.push(`/chat/${chat.id}`);
-    });
-  };
+  }, []);
 
   if (!loaded) {
     return (
@@ -80,22 +75,14 @@ const Page = () => {
     return router.push("/register");
   }
 
+  if (!chat) {
+    return router.push("/chat");
+  }
+
   return (
     <Main itemsCenter>
       <div {...DIV_PROPERTIES.BASE_SECTION}>
-        <h2>Присоединение к чату</h2>
-        <div className="flex flex-col items-center">
-          <span>Чтобы присоединиться к чату, вам нужен уникальный идентификатор</span>
-          <span>Если чат не будет найден, то мы его создадим</span>
-        </div>
-
-        <form
-          className="flex flex-col items-center gap-4"
-          onSubmit={handleSubmit}
-        >
-          <Input name="chatId" id="chatId" placeholder="Chat ID or name" />
-          <Button type="submit">Join or Create</Button>
-        </form>
+        {chat.name}
       </div>
     </Main>
   );

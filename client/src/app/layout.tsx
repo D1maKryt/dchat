@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation";
 import "tvuikit/index.css";
 import "./globals.css";
 
-const NOLAYOUT_PATHS = [/\/chat.*/];
+const NOLAYOUT_PATHS = [/\/chat\/.*/];
 
 export default function RootLayout({
   children,
