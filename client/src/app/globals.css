@@ -7,23 +7,42 @@
 @tailwind utilities;
 
 :root {
-  --bg-default: #2C2C2C;
-  
+  --bg-smooth: #111111;
+  --bg-smooth-light: #333333;
+  --bg-smooth-ce: #111111ce;
+  --bg-card: #353535;
+
+  --bg-default: #2c2c2c;
   --bg-section: #202020;
   --bg-component: #464646;
-  
-  --fg-default: #EEEEEE;
-  
-  --text-default: var(--fg-default);
-  --text-mini: #B3B3B3;
 
-  --fs-h1: 36px;
-  --fs-h2: 32px;
-  --fs-h3: 24px;
-  --fs-h4: 20px;
-  --fs-h5: 18px;
-  --fs-base: 16px;
-  --fs-mini: 14px;
+  --fg-default: #eeeeee;
+
+  --fg-text: var(--fg-default);
+  --fg-mini-text: #b3b3b3;
+  --fg-mini-text-30: #b3b3b330;
+  --fg-card: #4d4d4d90;
+  --fg-component: #272727;
+
+  --fs-h1: 32px;
+  --fs-h2: 24px;
+  --fs-h3: 20px;
+  --fs-h4: 18px;
+  --fs-h5: 16px;
+  --fs-base: 14px;
+  --fs-mini: 12px;
+}
+
+@layer base {
+  .text-base {
+    font-size: var(--fs-base);
+    color: var(--fg-default);
+  }
+
+  .text-mini {
+    font-size: var(--fs-mini);
+    color: var(--fg-mini-text);
+  }
 }
 
 body {
@@ -31,8 +50,17 @@ body {
   font-weight: 400;
   font-style: normal;
 
+  font-size: var(--fs-base);
   background-color: var(--bg-default);
-  color: var(--text-default);
+  color: var(--fg-text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Montserrat Alternates", sans-serif;
 }
 
 h1 {
@@ -57,9 +85,4 @@ h5 {
 
 a {
   text-decoration: underline;
-}
-
-.text-mini {
-  font-size: 12px;
-  color: var(--text-mini);
 }
