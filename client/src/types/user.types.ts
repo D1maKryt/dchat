@@ -19,3 +19,11 @@ export type LoginUser = {
   username: string;
   password: string;
 };
+
+export interface UsersOnRoles {
+  userId: string;
+  roleId: string;
+  assignedAt: Date;
+  user: User;
+  role: Role;
+}
