@@ -53,6 +53,8 @@ body {
   font-size: var(--fs-base);
   background-color: var(--bg-default);
   color: var(--fg-text);
+
+  height: 100vh;
 }
 
 h1,
