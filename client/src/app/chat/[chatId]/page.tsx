@@ -6,10 +6,10 @@ import type { SubmitEvent } from "react";
 import { Button, CircleProgress, Input, useStore } from "tvuikit";
 import { Main } from "@/layout";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { getUser } from "@/api/user";
+import { getMe, getUser } from "@/api/get-user";
 import { getToken } from "@/api/token";
 import { findChat } from "@/api/find-chat";
 
@@ -18,13 +18,14 @@ import { WEBSCOKET_URL } from "@/constants";
 
 import { useDateFormatters } from "@/hooks/use-date-formatters";
 
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { v4 as uuid } from "uuid";
 
 const Page = () => {
   const { chatId } = useParams<{ chatId: string }>();
   const router = useRouter();
 
+  const messagesRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { formatFullDate, formatTime } = useDateFormatters();
@@ -34,16 +35,17 @@ const Page = () => {
     items,
     addItem,
     getItem,
-    remoteItem: removeItem
   } = useStore<Message & { frontendId: string }>();
+  const users = useStore<User>();
   const [token, setToken] = useState<string | null>(null);
   const [chat, setChat] = useState<ChatRoom | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     (async () => {
-      const user = await getUser();
+      const user = await getMe();
       const token = await getToken();
       const chat = await findChat(chatId);
 
@@ -55,24 +57,53 @@ const Page = () => {
         return router.push("/chat");
       }
 
+      const websocket = io(WEBSCOKET_URL.href, {
+        extraHeaders: {
+          authorization: `Bearer ${token}`
+        }
+      });
+
+      websocket.emit("join", chatId);
+      websocket.on("msg", async (message: Message) => {
+        if (!user) {
+          return;
+        }
+        
+        if (message.authorId === user.id) {
+          return;
+        }
+
+        const gettedUser = await getUser(message.authorId);
+        if (!gettedUser) {
+          return;
+        }
+
+        if (items.current[message.id]) {
+          return;
+        }
+
+        users.addItem(gettedUser);
+        addItem({ ...message, frontendId: message.id });
+      });
+
+      users.addItem(user);
+      setSocket(websocket);
       setChat(chat);
       setUser(user);
       setToken(token);
       setLoaded(true);
     })();
+
+    return () => {
+      socket?.removeListener("msg");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
-  const websocket = io(WEBSCOKET_URL.href, {
-    extraHeaders: {
-      authorization: `Bearer ${token}`
-    }
-  });
-
   const handleMessageSend = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!user || !chat || !inputRef.current) { 
+    if (!user || !chat || !inputRef.current || !socket) { 
       return null;
     }
 
@@ -104,22 +135,15 @@ const Page = () => {
     inputRef.current.value = "";
 
     addItem(frontendMesssage);
-    websocket.emit("send", frontendMesssage, (message: Message) => {
+    socket.emit("send", frontendMesssage, (message: Message) => {
       items.current[id] = { ...message, frontendId: id };
     });
-  }
 
-  useEffect(() => {
-    websocket.emit("join", chatId);
-    websocket.on("msg", (message) => {
-      console.log({ message });
+    messagesRef.current?.scrollTo({
+      behavior: "smooth",
+      top: messagesRef.current.scrollHeight
     });
-
-    return () => {
-      /* websocket.emit("disconnect", chatId); */
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }
 
   if (!loaded) {
     return (
@@ -146,7 +170,7 @@ const Page = () => {
         ].join(" ")}
       >
         <h2>{chat.name}</h2>
-        <div className="w-full flex flex-col flex-1 gap-4 justify-start items-start">
+        <div ref={messagesRef} className="w-full flex flex-col flex-1 gap-4 justify-start items-start overflow-y-auto">
           {store.map(id => {
             const message = getItem(id);
             if (!message) {
@@ -158,7 +182,7 @@ const Page = () => {
 
             return (
               <div key={id} className="flex flex-col gap-2 w-fit py-2 px-4 bg-(--bg-smooth) rounded-xl">
-                <span>{message.authorId}</span>
+                <span>{users.getItem(message.authorId)?.name || "loading..."}</span>
                 <p>{message.content}</p>
                 <span className="text-mini self-end">{formattedDate}</span>
               </div>

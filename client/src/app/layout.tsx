@@ -4,7 +4,7 @@ import type { User } from "@/types";
 
 import { Footer, Header } from "@/layout";
 
-import { getUser } from "@/api/user";
+import { getMe } from "@/api/get-user";
 
 import { CircleProgress } from "tvuikit";
 
@@ -27,7 +27,7 @@ export default function RootLayout({
 
   useEffect(() => {
     (async () => {
-      const user = await getUser();
+      const user = await getMe();
       setUser(user);
       setLoaded(true);
     })();

@@ -1,19 +1,23 @@
 import {
   Injectable,
   CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
+  // ExecutionContext,
+  // HttpException,
+  // HttpStatus,
 } from '@nestjs/common';
-import JWT from 'jsonwebtoken';
+// import JWT from 'jsonwebtoken';
 
-import { Request } from 'express';
-import { resolveAuthorization } from 'src/utils/resolve.authorization';
-import { MyTokenPayloadAdmin } from './dto/dto.role';
+// import { Request } from 'express';
+// import { resolveAuthorization } from 'src/utils/resolve.authorization';
+// import { MyTokenPayloadAdmin } from './dto/dto.role';
+// import { Observable } from 'rxjs';
 
 @Injectable()
 export class GuardAdmin implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
+  canActivate(): boolean {
+    return true;
+  }
+  /*   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
     const token = request.headers.authorization;
     const ClearToken = resolveAuthorization(token);
@@ -28,5 +32,5 @@ export class GuardAdmin implements CanActivate {
     }
 
     return true;
-  }
+  } */
 }

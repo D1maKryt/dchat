@@ -43,7 +43,7 @@ export class Strategies {
     const generatedToken = JWT.sign(
       {
         id: id,
-        roles: 'fd0c226e-25ce-4c1b-a016-db91e2248934',
+        roles: ['fd0c226e-25ce-4c1b-a016-db91e2248934'],
       },
       process.env.SECRET!,
       {

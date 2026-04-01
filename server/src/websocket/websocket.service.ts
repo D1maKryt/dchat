@@ -44,7 +44,7 @@ export class WebsocketService {
   }
 
   async join(id: string, @ConnectedSocket() client: Socket) {
-    const room = (await this.prisma.chatRoom.findFirst({
+    const room = (await this.prisma.chatRoom.findUnique({
       where: { id: id },
     })) as ChatRoom | null;
 

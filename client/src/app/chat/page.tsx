@@ -9,7 +9,7 @@ import { Main } from "@/layout";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { getUser } from "@/api/user";
+import { getMe } from "@/api/get-user";
 import { getToken } from "@/api/token";
 import { findChat } from "@/api/find-chat";
 
@@ -27,7 +27,7 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      const user = await getUser();
+      const user = await getMe();
       const token = await getToken();
       if (!user || !token) {
         return router.push("/register");

@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Main } from "@/layout";
 import { DIV_PROPERTIES } from "@/properties";
 
-import { getUser } from "@/api/user";
+import { getMe } from "@/api/get-user";
 import { confirmTwoFa, getTwoFa } from "@/api/two-fa";
 
 import { Button, Input } from "tvuikit";
@@ -24,7 +24,7 @@ const Page = () => {
 
   useLayoutEffect(() => {
     (async () => {
-      const user = await getUser();
+      const user = await getMe();
       setUser(user);
 
       if (!user) {
