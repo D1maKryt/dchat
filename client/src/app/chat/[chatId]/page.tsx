@@ -29,13 +29,10 @@ const Page = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { formatFullDate, formatTime } = useDateFormatters();
-  
-  const {
-    store,
-    items,
-    addItem,
-    getItem,
-  } = useStore<Message & { frontendId: string }>();
+
+  const { store, items, addItem, getItem } = useStore<
+    Message & { frontendId: string }
+  >();
   const users = useStore<User>();
   const [token, setToken] = useState<string | null>(null);
   const [chat, setChat] = useState<ChatRoom | null>(null);
@@ -59,8 +56,8 @@ const Page = () => {
 
       const websocket = io(WEBSCOKET_URL.href, {
         extraHeaders: {
-          authorization: `Bearer ${token}`
-        }
+          authorization: `Bearer ${token}`,
+        },
       });
 
       websocket.emit("join", chatId);
@@ -68,7 +65,7 @@ const Page = () => {
         if (!user) {
           return;
         }
-        
+
         if (message.authorId === user.id) {
           return;
         }
@@ -96,14 +93,14 @@ const Page = () => {
 
     return () => {
       socket?.removeListener("msg");
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   const handleMessageSend = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!user || !chat || !inputRef.current || !socket) { 
+    if (!user || !chat || !inputRef.current || !socket) {
       return null;
     }
 
@@ -141,9 +138,9 @@ const Page = () => {
 
     messagesRef.current?.scrollTo({
       behavior: "smooth",
-      top: messagesRef.current.scrollHeight
+      top: messagesRef.current.scrollHeight,
     });
-  }
+  };
 
   if (!loaded) {
     return (
@@ -166,23 +163,31 @@ const Page = () => {
       <div
         className={[
           DIV_PROPERTIES.BASE_SECTION.className,
-          "w-full h-full"
+          "w-full h-full",
         ].join(" ")}
       >
         <h2>{chat.name}</h2>
-        <div ref={messagesRef} className="w-full flex flex-col flex-1 gap-4 justify-start items-start overflow-y-auto">
-          {store.map(id => {
+        <div
+          ref={messagesRef}
+          className="w-full flex flex-col flex-1 gap-4 justify-start items-start overflow-y-auto"
+        >
+          {store.map((id) => {
             const message = getItem(id);
             if (!message) {
               return null;
-            };
+            }
 
             const date = new Date(message.createdAt);
             const formattedDate = `${formatTime(date)}, ${formatFullDate(date)}`;
 
             return (
-              <div key={id} className="flex flex-col gap-2 w-fit py-2 px-4 bg-(--bg-smooth) rounded-xl">
-                <span>{users.getItem(message.authorId)?.name || "loading..."}</span>
+              <div
+                key={id}
+                className="flex flex-col gap-2 w-fit py-2 px-4 bg-(--bg-smooth) rounded-xl"
+              >
+                <span>
+                  {users.getItem(message.authorId)?.name || "loading..."}
+                </span>
                 <p>{message.content}</p>
                 <span className="text-mini self-end">{formattedDate}</span>
               </div>
@@ -191,7 +196,12 @@ const Page = () => {
         </div>
 
         <form className="w-full flex gap-2" onSubmit={handleMessageSend}>
-          <Input ref={inputRef} name="content" className="flex-1 max-w-none" placeholder="Your message..." />
+          <Input
+            ref={inputRef}
+            name="content"
+            className="flex-1 max-w-none"
+            placeholder="Your message..."
+          />
           <Button type="submit">Send</Button>
         </form>
       </div>

@@ -39,11 +39,11 @@ const Page = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   const websocket = io(WEBSCOKET_URL.href, {
     extraHeaders: {
-      authorization: `Bearer ${token}`
-    }
+      authorization: `Bearer ${token}`,
+    },
   });
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -85,7 +85,9 @@ const Page = () => {
       <div {...DIV_PROPERTIES.BASE_SECTION}>
         <h2>Присоединение к чату</h2>
         <div className="flex flex-col items-center">
-          <span>Чтобы присоединиться к чату, вам нужен уникальный идентификатор</span>
+          <span>
+            Чтобы присоединиться к чату, вам нужен уникальный идентификатор
+          </span>
           <span>Если чат не будет найден, то мы его создадим</span>
         </div>
 

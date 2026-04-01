@@ -30,4 +30,4 @@ export const getUser = cache(async (id: string): Promise<User | null> => {
   }
 
   return data as User;
-})
+});
